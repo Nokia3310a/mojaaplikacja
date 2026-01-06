@@ -1,0 +1,613 @@
+-<!DOCTYPE html>
+<html lang="pl">
+<head>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Zadania">
+<link rel="apple-touch-icon" href="icon-192.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeTracker</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Nawigacja -->
+        <nav class="bottom-nav">
+            <button class="nav-btn" data-tab="profile">
+                👤 Profil
+            </button>
+            <button class="nav-btn active" data-tab="tasks">
+                📋 Zadania
+            </button>
+            <button class="nav-btn" data-tab="workouts">
+                💪 Treningi
+            </button>
+            <button class="nav-btn" data-tab="calories">
+                🍎 Kalorie
+            </button>
+            <button class="nav-btn" data-tab="projects">
+                📂 Projekty
+            </button>
+            <button class="nav-btn" data-tab="sleep">
+                😴 Sen
+            </button>
+            <button class="nav-btn" data-tab="charts">
+                📊 Wykresy
+            </button>
+            <button class="nav-btn" data-tab="health">
+                💊 Zdrowie
+            </button>
+        </nav>
+
+        <!-- Nagłówek -->
+    <header class="header">
+        <div class="header-top">
+            <h1>LifeTracker</h1>
+            <button class="darkmode-toggle" onclick="toggleDarkMode()" title="Tryb ciemny/jasny">
+            🌙
+        </button>
+            </div>
+            <div class="stats-bar">
+                <span class="stat">🔥 <span id="total-points">0</span> pkt</span>
+                <span class="stat">📅 Seria: <span id="streak">0</span> dni</span>
+            </div>
+        </header>
+
+        <!-- Zawartość -->
+        <main class="content">
+             <section id="profile" class="tab-content">
+        <div class="profile-header-simple">
+            <div class="profile-avatar-simple" onclick="changeAvatar()">
+                <span id="profile-avatar">👤</span>
+            </div>
+            <h2 id="profile-name" onclick="editProfileName()">Twoje Imię</h2>
+            <p class="profile-points">🔥 <span id="profile-points">0</span> punktów</p>
+        </div>
+        
+        <div class="profile-section">
+            <h3>📱 Widoczne zakładki</h3>
+            <p class="profile-hint">Włącz lub wyłącz zakładki w nawigacji</p>
+            
+            <div class="tabs-toggle-list" id="tabs-toggle-list">
+                <!-- Generowane przez JS -->
+            </div>
+        </div>
+        
+        <div class="profile-section">
+            <h3>⚙️ Ustawienia</h3>
+            
+            <div class="profile-setting" onclick="toggleDarkMode()">
+                <span>🌙 Tryb ciemny</span>
+                <div class="toggle-switch" id="darkmode-toggle"></div>
+            </div>
+            
+            <div class="profile-setting" onclick="exportData()">
+                <span>📤 Eksportuj dane</span>
+                <span class="setting-arrow">›</span>
+            </div>
+            
+            <div class="profile-setting danger" onclick="resetAllData()">
+                <span>🗑️ Usuń wszystkie dane</span>
+                <span class="setting-arrow">›</span>
+            </div>
+        </div>
+    </section>
+    
+             <section id="profile" class="tab-content">
+        <div class="profile-header">
+            <div class="profile-avatar" onclick="changeAvatar()">
+                <span id="profile-avatar-emoji">👤</span>
+                <div class="avatar-edit">✏️</div>
+            </div>
+            <div class="profile-info">
+                <h2 id="profile-name" onclick="editProfileName()">Twoje Imię</h2>
+                <p class="profile-subtitle">Kliknij aby edytować</p>
+            </div>
+        </div>
+        
+        <!-- Statystyki ogólne -->
+        <div class="profile-stats">
+            <div class="profile-stat">
+                <span class="profile-stat-value" id="profile-total-points">0</span>
+                <span class="profile-stat-label">Punktów</span>
+            </div>
+            <div class="profile-stat">
+                <span class="profile-stat-value" id="profile-streak">0</span>
+                <span class="profile-stat-label">Dni serii</span>
+            </div>
+            <div class="profile-stat">
+                <span class="profile-stat-value" id="profile-level">1</span>
+                <span class="profile-stat-label">Poziom</span>
+            </div>
+        </div>
+        
+        <!-- Poziom i progress -->
+        <div class="profile-level-section">
+            <div class="level-info">
+                <span class="level-title" id="level-title">Początkujący</span>
+                <span class="level-progress-text" id="level-progress-text">0/100 XP</span>
+            </div>
+            <div class="level-progress-bar">
+                <div class="level-progress-fill" id="level-progress-fill"></div>
+            </div>
+        </div>
+        
+        <!-- Wybór zakładek -->
+        <div class="profile-tabs-section">
+            <h3>📱 Widoczne zakładki</h3>
+            <p class="tabs-description">Wybierz które zakładki chcesz widzieć w nawigacji:</p>
+            
+            <div class="tabs-list" id="tabs-list">
+                <!-- Generowane przez JS -->
+            </div>
+        </div>
+        
+        <!-- Osiągnięcia -->
+        <div class="profile-achievements">
+            <h3>🏆 Osiągnięcia</h3>
+            <div class="achievements-grid" id="profile-achievements-grid">
+                <!-- Generowane przez JS -->
+            </div>
+        </div>
+        
+        <!-- Ustawienia -->
+        <div class="profile-settings">
+            <h3>⚙️ Ustawienia</h3>
+            
+            <div class="setting-item" onclick="toggleDarkMode()">
+                <span class="setting-icon">🌙</span>
+                <span class="setting-name">Tryb ciemny</span>
+                <span class="setting-toggle" id="darkmode-status">OFF</span>
+            </div>
+            
+            <div class="setting-item" onclick="exportData()">
+                <span class="setting-icon">📤</span>
+                <span class="setting-name">Eksportuj dane</span>
+                <span class="setting-arrow">→</span>
+            </div>
+            
+            <div class="setting-item" onclick="importData()">
+                <span class="setting-icon">📥</span>
+                <span class="setting-name">Importuj dane</span>
+                <span class="setting-arrow">→</span>
+            </div>
+            
+            <div class="setting-item danger" onclick="resetAllData()">
+                <span class="setting-icon">🗑️</span>
+                <span class="setting-name">Usuń wszystkie dane</span>
+                <span class="setting-arrow">→</span>
+            </div>
+        </div>
+        
+        <!-- Informacje o aplikacji -->
+        <div class="profile-about">
+            <p>LifeTracker v1.0</p>
+            <p>Twoja aplikacja do śledzenia życia 💪</p>
+        </div>
+    </section>
+      
+            <section id="tasks" class="tab-content active">
+                <div class="section-header">
+                    <h2>Moje Zadania</h2>
+                    <button class="add-btn" onclick="openTaskModal()">+ Dodaj</button>
+                </div>
+                <div class="filter-tabs">
+                    <button class="filter active" data-filter="all">Wszystkie</button>
+                    <button class="filter" data-filter="active">Aktywne</button>
+                    <button class="filter" data-filter="done">Ukończone</button>
+                </div>
+                <ul id="task-list" class="item-list"></ul>
+            </section>
+
+            <!-- TRENINGI -->
+            <section id="workouts" class="tab-content">
+                <div class="section-header">
+                    <h2>Treningi</h2>
+                    <button class="add-btn" onclick="openWorkoutModal()">+ Dodaj</button>
+                </div>
+                <div class="workout-stats">
+                    <div class="stat-card">
+                        <span class="stat-value" id="weekly-workouts">0</span>
+                        <span class="stat-label">Ten tydzień</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value" id="total-workouts">0</span>
+                        <span class="stat-label">Wszystkie</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value" id="total-duration">0</span>
+                        <span class="stat-label">Minut</span>
+                    </div>
+                </div>
+                <ul id="workout-list" class="item-list"></ul>
+            </section>
+
+            <!-- KALORIE -->
+            <section id="calories" class="tab-content">
+                <div class="section-header">
+                    <h2>Dziennik Kalorii</h2>
+                    <button class="add-btn" onclick="openMealModal()">+ Dodaj</button>
+                </div>
+                <div class="calorie-summary">
+                    <div class="calorie-ring">
+                        <svg viewBox="0 0 100 100">
+                            <circle class="bg" cx="50" cy="50" r="45"/>
+                            <circle class="progress" id="calorie-progress" cx="50" cy="50" r="45"/>
+                        </svg>
+                        <div class="calorie-text">
+                            <span class="eaten" id="calories-eaten">0</span>
+                            <span class="goal">/ <span id="calories-goal">2000</span></span>
+                        </div>
+                    </div>
+                    <div class="macros">
+                        <div class="macro">
+                            <span class="macro-label">Białko</span>
+                            <span class="macro-value" id="protein">0g</span>
+                        </div>
+                        <div class="macro">
+                            <span class="macro-label">Węgle</span>
+                            <span class="macro-value" id="carbs">0g</span>
+                        </div>
+                        <div class="macro">
+                            <span class="macro-label">Tłuszcze</span>
+                            <span class="macro-value" id="fats">0g</span>
+                        </div>
+                    </div>
+                </div>
+                <ul id="meal-list" class="item-list"></ul>
+            </section>
+
+            <!-- RANKING -->
+             <!-- WYKRESY -->
+<section id="charts" class="tab-content">
+    <div class="section-header">
+        <h2>📊 Statystyki i Wykresy</h2>
+    </div>
+    
+    <!-- Podsumowanie ogólne -->
+    <div class="charts-summary">
+        <div class="summary-card">
+            <span class="summary-icon">🎯</span>
+            <div class="summary-info">
+                <span class="summary-value" id="chart-total-points">0</span>
+                <span class="summary-label">Punktów łącznie</span>
+            </div>
+        </div>
+        <div class="summary-card">
+            <span class="summary-icon">📅</span>
+            <div class="summary-info">
+                <span class="summary-value" id="chart-active-days">0</span>
+                <span class="summary-label">Aktywnych dni</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Wybór okresu -->
+    <div class="chart-period-selector">
+        <button class="period-btn active" data-period="week">7 dni</button>
+        <button class="period-btn" data-period="month">30 dni</button>
+        <button class="period-btn" data-period="all">Wszystko</button>
+    </div>
+    
+    <!-- Wykres zadań -->
+    <div class="chart-container">
+        <div class="chart-header">
+            <h3>📋 Ukończone zadania</h3>
+            <span class="chart-total" id="tasks-chart-total">0 zadań</span>
+        </div>
+        <div class="chart-wrapper">
+            <div class="chart-bars" id="tasks-chart"></div>
+            <div class="chart-labels" id="tasks-chart-labels"></div>
+        </div>
+    </div>
+    
+    <!-- Wykres treningów -->
+    <div class="chart-container">
+        <div class="chart-header">
+            <h3>💪 Treningi</h3>
+            <span class="chart-total" id="workouts-chart-total">0 treningów</span>
+        </div>
+        <div class="chart-wrapper">
+            <div class="chart-bars" id="workouts-chart"></div>
+            <div class="chart-labels" id="workouts-chart-labels"></div>
+        </div>
+        <div class="chart-legend">
+            <span class="legend-item"><span class="legend-color strength"></span> Siłowy</span>
+            <span class="legend-item"><span class="legend-color cardio"></span> Cardio</span>
+            <span class="legend-item"><span class="legend-color other"></span> Inne</span>
+        </div>
+    </div>
+    
+    <!-- Wykres kalorii -->
+    <div class="chart-container">
+        <div class="chart-header">
+            <h3>🍎 Kalorie</h3>
+            <span class="chart-total" id="calories-chart-total">0 kcal średnio</span>
+        </div>
+        <div class="chart-wrapper">
+            <div class="chart-line-container">
+                <div class="chart-line-goal" id="calories-goal-line"></div>
+                <svg class="chart-line-svg" id="calories-line-chart" viewBox="0 0 300 100" preserveAspectRatio="none"></svg>
+            </div>
+            <div class="chart-labels" id="calories-chart-labels"></div>
+        </div>
+    </div>
+    
+    <!-- Wykres snu -->
+    <div class="chart-container">
+        <div class="chart-header">
+            <h3>😴 Sen</h3>
+            <span class="chart-total" id="sleep-chart-total">0h średnio</span>
+        </div>
+        <div class="chart-wrapper">
+            <div class="chart-bars horizontal" id="sleep-chart-detailed"></div>
+        </div>
+    </div>
+    
+    <!-- Wykres punktów -->
+    <div class="chart-container">
+        <div class="chart-header">
+            <h3>🏆 Zdobyte punkty</h3>
+            <span class="chart-total" id="points-chart-total">0 pkt</span>
+        </div>
+        <div class="chart-wrapper">
+            <div class="chart-bars" id="points-chart"></div>
+            <div class="chart-labels" id="points-chart-labels"></div>
+        </div>
+    </div>
+    
+    <!-- Statystyki szczegółowe -->
+    <div class="detailed-stats">
+        <h3>📈 Szczegółowe statystyki</h3>
+        <div class="stats-grid">
+            <div class="stat-item">
+                <span class="stat-icon">📋</span>
+                <div class="stat-details">
+                    <span class="stat-name">Zadania</span>
+                    <span class="stat-value-detail" id="stat-tasks-completed">0 ukończonych</span>
+                    <span class="stat-value-detail" id="stat-tasks-pending">0 oczekujących</span>
+                </div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-icon">💪</span>
+                <div class="stat-details">
+                    <span class="stat-name">Treningi</span>
+                    <span class="stat-value-detail" id="stat-workouts-total">0 treningów</span>
+                    <span class="stat-value-detail" id="stat-workouts-time">0 minut</span>
+                </div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-icon">🍎</span>
+                <div class="stat-details">
+                    <span class="stat-name">Kalorie</span>
+                    <span class="stat-value-detail" id="stat-calories-avg">0 kcal średnio</span>
+                    <span class="stat-value-detail" id="stat-calories-total">0 kcal łącznie</span>
+                </div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-icon">😴</span>
+                <div class="stat-details">
+                    <span class="stat-name">Sen</span>
+                    <span class="stat-value-detail" id="stat-sleep-avg">0h średnio</span>
+                    <span class="stat-value-detail" id="stat-sleep-best">0h najdłuższy</span>
+                </div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-icon">📂</span>
+                <div class="stat-details">
+                    <span class="stat-name">Projekty</span>
+                    <span class="stat-value-detail" id="stat-projects-active">0 aktywnych</span>
+                    <span class="stat-value-detail" id="stat-projects-done">0 ukończonych</span>
+                </div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-icon">🔥</span>
+                <div class="stat-details">
+                    <span class="stat-name">Seria</span>
+                    <span class="stat-value-detail" id="stat-streak-current">0 dni obecna</span>
+                    <span class="stat-value-detail" id="stat-streak-best">0 dni najlepsza</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+             <section id="sleep" class="tab-content">
+    <div class="section-header">
+        <h2>Śledzenie Snu</h2>
+        <button class="add-btn" onclick="openSleepModal()">+ Dodaj sen</button>
+    </div>
+    
+    <div class="sleep-summary">
+        <div class="sleep-avg-card">
+            <div class="sleep-icon">😴</div>
+            <div class="sleep-avg-info">
+                <span class="sleep-avg-value" id="avg-sleep">0h 0min</span>
+                <span class="sleep-avg-label">Średnia z 7 dni</span>
+            </div>
+            <div class="sleep-quality" id="sleep-quality-badge">
+                Brak danych
+            </div>
+        </div>
+    </div>
+    
+    <div class="sleep-stats">
+        <div class="stat-card">
+            <span class="stat-value" id="total-sleeps">0</span>
+            <span class="stat-label">Zapisanych nocy</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-value" id="best-sleep">-</span>
+            <span class="stat-label">Najdłuższy sen</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-value" id="sleep-streak">0</span>
+            <span class="stat-label">Dni z celem</span>
+        </div>
+    </div>
+    
+    <div class="sleep-goal-section">
+        <h3>🎯 Cel snu</h3>
+        <div class="sleep-goal-bar">
+            <div class="sleep-goal-progress" id="sleep-goal-progress"></div>
+        </div>
+        <div class="sleep-goal-text">
+            <span>Dziś: <strong id="today-sleep">0h</strong></span>
+            <span>Cel: <strong id="sleep-goal-display">8h</strong></span>
+        </div>
+    </div>
+    
+    <div class="sleep-chart">
+        <h3>📊 Ostatnie 7 dni</h3>
+        <div class="sleep-bars" id="sleep-chart-bars"></div>
+        <div class="sleep-chart-labels" id="sleep-chart-labels"></div>
+    </div>
+    
+    <h3 style="margin: 20px 0 10px;">📋 Historia snu</h3>
+    <ul id="sleep-list" class="item-list"></ul>
+</section>
+
+            <section id="projects" class="tab-content">
+    <div class="section-header">
+        <h2>Moje Projekty</h2>
+        <button class="add-btn" onclick="openProjectModal()">+ Nowy projekt</button>
+    </div>
+    
+    <div class="project-stats">
+        <div class="stat-card">
+            <span class="stat-value" id="active-projects">0</span>
+            <span class="stat-label">Aktywne</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-value" id="completed-projects">0</span>
+            <span class="stat-label">Ukończone</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-value" id="total-project-tasks">0</span>
+            <span class="stat-label">Zadań</span>
+        </div>
+    </div>
+    
+    <div id="projects-list" class="projects-grid"></div>
+    </section>
+
+    <!-- ZDROWIE - WAGA I SUPLEMENTY -->
+<section id="health" class="tab-content">
+    <div class="section-header">
+        <h2>💊 Zdrowie</h2>
+    </div>
+    
+    <!-- Suplementy na dziś -->
+    <div class="supplements-today">
+        <div class="supplements-header">
+            <h3>📅 Suplementy na dziś</h3>
+            <span class="supplements-date" id="today-date"></span>
+        </div>
+        <div class="supplements-checklist" id="supplements-checklist">
+            <!-- Generowane przez JS -->
+        </div>
+        <div class="supplements-streak">
+            <span>🔥 Seria: <strong id="supplements-streak">0</strong> dni</span>
+        </div>
+    </div>
+    
+    <!-- Zarządzanie suplementami -->
+    <div class="supplements-manage">
+        <div class="supplements-manage-header">
+            <h3>💊 Moje suplementy</h3>
+            <button class="add-btn" onclick="openSupplementModal()">+ Dodaj</button>
+        </div>
+        <ul id="supplements-list" class="supplements-list">
+            <!-- Generowane przez JS -->
+        </ul>
+    </div>
+    
+    <!-- Waga -->
+    <div class="weight-section">
+        <div class="weight-header">
+            <h3>⚖️ Waga</h3>
+            <button class="add-btn" onclick="openWeightModal()">+ Dodaj pomiar</button>
+        </div>
+        
+        <div class="weight-summary">
+            <div class="weight-current">
+                <span class="weight-value" id="current-weight">--</span>
+                <span class="weight-unit">kg</span>
+                <span class="weight-change" id="weight-change"></span>
+            </div>
+            <div class="weight-stats">
+                <div class="weight-stat">
+                    <span class="weight-stat-label">Początkowa</span>
+                    <span class="weight-stat-value" id="start-weight">-- kg</span>
+                </div>
+                <div class="weight-stat">
+                    <span class="weight-stat-label">Cel</span>
+                    <span class="weight-stat-value" id="goal-weight">-- kg</span>
+                </div>
+                <div class="weight-stat">
+                    <span class="weight-stat-label">Do celu</span>
+                    <span class="weight-stat-value" id="weight-to-goal">-- kg</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="weight-progress">
+            <div class="weight-progress-bar">
+                <div class="weight-progress-fill" id="weight-progress-fill"></div>
+            </div>
+            <div class="weight-progress-labels">
+                <span id="weight-start-label">Start</span>
+                <span id="weight-goal-label">Cel</span>
+            </div>
+        </div>
+        
+        <!-- Wykres wagi -->
+        <div class="weight-chart">
+            <h4>📈 Historia wagi (30 dni)</h4>
+            <div class="weight-chart-container">
+                <svg class="weight-chart-svg" id="weight-chart-svg" viewBox="0 0 300 120" preserveAspectRatio="none"></svg>
+            </div>
+        </div>
+        
+        <!-- Historia pomiarów -->
+        <div class="weight-history">
+            <h4>📋 Historia pomiarów</h4>
+            <ul id="weight-history-list" class="weight-history-list">
+                <!-- Generowane przez JS -->
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Ustawienia celu wagi -->
+    <div class="weight-goal-settings">
+        <button class="settings-btn" onclick="openWeightGoalModal()">
+            ⚙️ Ustaw cel wagi
+        </button>
+    </div>
+</section>
+        </main>
+    </div>
+
+    <!-- MODALE -->
+    <div id="modal-overlay" class="modal-overlay" onclick="closeModal()">
+        <div class="modal" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal()">✕</button>
+            <div id="modal-content"></div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+
+    <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js');
+  }
+</script>
+
+</body>
+</html>
